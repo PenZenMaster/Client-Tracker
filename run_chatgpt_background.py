@@ -6,7 +6,7 @@ client_config = {
     "url": "https://www.tri-stateheating.com/",
     "mobile_url": "https://www.tristate-hvac.com/",
     "gbp_url": "https://g.co/kgs/j3Bb4gy",
-    "output_root": "E:/projects/Project Tracking/Client Tracker"
+    "output_root": r"C:\Users\georg\OneDrive\RankRocket\Clients\Patrick Rombyer\Tri-State Heating & Cooling, LLC",
 }
 
 run(client_config)
