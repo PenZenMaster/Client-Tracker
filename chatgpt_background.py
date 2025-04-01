@@ -10,9 +10,13 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def run(client_config):
     client_name = client_config["name"]
+    address = client_config.get("address", "Unknown")
+    url = client_config.get("url", "").strip()
+    mobile_url = client_config.get("mobile_url", "").strip()
+    gbp_url = client_config.get("gbp_url", "").strip()
     base_output = client_config["output_root"]
 
-    # Only append the client name if it's not already at the end
+    # Prevent duplicate client folder
     if not base_output.lower().endswith(client_name.lower()):
         output_path = os.path.join(base_output, client_name)
     else:
@@ -20,6 +24,7 @@ def run(client_config):
 
     os.makedirs(output_path, exist_ok=True)
 
+    # Build the prompt
     prompt = (
         f"I am gathering background information about the following local HVAC company. "
         f"Please summarize the services they offer and provide any business background information based on the name, address, and URLs provided:\n\n"
@@ -32,6 +37,7 @@ def run(client_config):
 
     print(f"Generating background summary for {client_name}...")
 
+    # Call OpenAI API
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[
@@ -43,6 +49,7 @@ def run(client_config):
 
     summary = response.choices[0].message.content
 
+    # Save to Word Document
     doc = Document()
     doc.add_heading(f"{client_name} – Background Information", 0)
     doc.add_paragraph(summary)
@@ -52,3 +59,4 @@ def run(client_config):
     doc.save(output_file)
 
     print(f"Saved background info to {output_file}")
+    return output_file
