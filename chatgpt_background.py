@@ -2,6 +2,7 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 from docx import Document
+from scraper import scrape_website_text
 
 # Load API Key from .env
 load_dotenv()
@@ -16,7 +17,6 @@ def run(client_config):
     gbp_url = client_config.get("gbp_url", "").strip()
     base_output = client_config["output_root"]
 
-    # Prevent duplicate client folder
     if not base_output.lower().endswith(client_name.lower()):
         output_path = os.path.join(base_output, client_name)
     else:
@@ -24,20 +24,21 @@ def run(client_config):
 
     os.makedirs(output_path, exist_ok=True)
 
-    # Build the prompt
-    prompt = (
-        f"I am gathering background information about the following local HVAC company. "
-        f"Please summarize the services they offer and provide any business background information based on the name, address, and URLs provided:\n\n"
-        f"Business Name: {client_name}\n"
-        f"Address: {address}\n"
-        f"Website: {url}\n"
-        f"Mobile Site: {mobile_url}\n"
-        f"Google Business Profile: {gbp_url}"
-    )
+    # Scrape site content
+    site_text = scrape_website_text(url)
+
+    # Use triple quotes to avoid escape hell
+    prompt = f"""Based on the following website content, provide a summary of services
+and background information for this HVAC company.
+
+Business Name: {client_name}
+Address: {address}
+Website Content:
+{site_text}
+"""
 
     print(f"Generating background summary for {client_name}...")
 
-    # Call OpenAI API
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[
@@ -49,7 +50,6 @@ def run(client_config):
 
     summary = response.choices[0].message.content
 
-    # Save to Word Document
     doc = Document()
     doc.add_heading(f"{client_name} – Background Information", 0)
     doc.add_paragraph(summary)
@@ -59,4 +59,3 @@ def run(client_config):
     doc.save(output_file)
 
     print(f"Saved background info to {output_file}")
-    return output_file
