@@ -1,12 +1,11 @@
+import os
 from openai import OpenAI
 from dotenv import load_dotenv
-import os
 from docx import Document
 
-# Load API Key
+# Load API Key from .env
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
 
 def run(client_config):
     client_name = client_config["name"]
@@ -14,54 +13,37 @@ def run(client_config):
     os.makedirs(output_path, exist_ok=True)
 
     url = client_config.get("url", "").strip()
+    mobile_url = client_config.get("mobile_url", "").strip()
     gbp_url = client_config.get("gbp_url", "").strip()
+    address = client_config.get("address", "Unknown")
 
-    if url and gbp_url:
-        target_info = f"Website: {url}\nGoogle Business Profile: {gbp_url}"
-    elif url:
-        target_info = f"Website: {url}"
-    elif gbp_url:
-        target_info = f"Google Business Profile: {gbp_url}"
-    else:
-        raise ValueError("Must include either a 'url' or 'gbp_url'.")
+    prompt = (
+        f"I am gathering background information about the following local HVAC company. "
+        f"Please summarize the services they offer and provide any business background information based on the name, address, and URLs provided:\n\n"
+        f"Business Name: {client_name}\n"
+        f"Address: {address}\n"
+        f"Website: {url}\n"
+        f"Mobile Site: {mobile_url}\n"
+        f"Google Business Profile: {gbp_url}"
+    )
 
+    print(f"Generating background summary for {client_name}...")
 
-prompt = (
-    f"I am gathering background information about the following local HVAC company. "
-    f"Please summarize the services they offer and provide any business background information based on the name, address, and URLs provided:\n\n"
-    f"Business Name: {client_name}\n"
-    f"Address: {client_config.get('address', 'Unknown')}\n"
-    f"Website: {client_config.get('url', '')}\n"
-    f"Mobile Site: {client_config.get('mobile_url', '')}\n"
-    f"Google Business Profile: {client_config.get('gbp_url', '')}"
-)
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "You are an SEO assistant."},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.7,
+    )
 
-print(f"Generating background summary for {client_name}...")
+    summary = response.choices[0].message.content
 
-prompt = (
-    f"I am gathering background information about the following local HVAC company. "
-    f"Please summarize the services they offer and provide any business background information based on the name, address, and URLs provided:\n\n"
-    f"Business Name: {client_name}\n"
-    f"Address: {client_config.get('address', 'Unknown')}\n"
-    f"Website: {client_config.get('url', '')}\n"
-    f"Mobile Site: {client_config.get('mobile_url', '')}\n"
-    f"Google Business Profile: {client_config.get('gbp_url', '')}"
-)
+    doc = Document()
+    doc.add_heading(f"{client_name} – Background Information", 0)
+    doc.add_paragraph(summary)
+    output_file = os.path.join(output_path, f"{client_name} background information.docx")
+    doc.save(output_file)
 
-response = client.chat.completions.create(
-    model="gpt-4",
-    messages=[
-        {"role": "system", "content": "You are an SEO assistant."},
-        {"role": "user", "content": prompt},
-    ],
-    temperature=0.7,
-)
-
-summary = response.choices[0].message.content
-
-doc = Document()
-doc.add_heading(f"{client_name} – Background Information", 0)
-doc.add_paragraph(summary)
-doc.save(os.path.join(output_path, f"{client_name} background information.docx"))
-
-print(f"Saved background info to {output_path}")
+    print(f"Saved background info to {output_file}")

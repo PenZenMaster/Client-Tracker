@@ -9,5 +9,4 @@ client_config = {
     "output_root": "E:/projects/Project Tracking/Client Tracker"
 }
 
-
 run(client_config)
