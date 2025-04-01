@@ -12,6 +12,9 @@ def run(client_config):
     state = client_config["state"]
     niche = client_config["niche"]
     cid_url = client_config.get("gbp_url", "")
+    services = client_config.get("services", [])
+    towns_10mi = client_config.get("nearby_10mi", [])
+    towns_20mi = client_config.get("nearby_20mi", [])
 
     base_output = client_config["output_root"]
     if not base_output.lower().endswith(client_name.lower()):
@@ -21,24 +24,43 @@ def run(client_config):
 
     os.makedirs(output_path, exist_ok=True)
 
+    # Build service summary string
+    service_names = [s.split("/")[-2].replace("-", " ").title() for s in services]
+    service_summary = ", ".join(service_names)
+
     prompt = f"""
-You are a local SEO expert. Based on the business niche "{niche}" and the location "{city}, {state}", generate a list of 25 high-opportunity local SEO keywords.
+You are an advanced local SEO assistant.
 
-Organize the keywords into the following categories:
-1. Primary Keywords
-2. Service-Based Keywords
-3. Geo-Modified Keywords
-4. Long-Tail Local Questions
+The business name is: {client_name}
+Niche: {niche}
+Primary Location: {city}, {state}
+Service Types: {service_summary}
+Google Business Profile: {cid_url}
 
-Please use clearly labeled section headers, and present each keyword in bullet-point format.
+Generate a list of branded local SEO keywords that answer:
+1. Who are you?
+2. What do you do?
+3. Where do you do it?
 
-This is for a business listed on Google Business Profile:
-{cid_url}
+Group the branded keywords by geography as follows:
 
-Output in clean, readable plain text with section titles and bullet points. No preamble.
+**Branded Keywords – Primary Location ({city}, {state})**
+
+Generate keywords that include the business name, services, and location.
+
+**Branded Keywords – Within 10 Miles**
+Cities: {", ".join(towns_10mi)}
+
+**Branded Keywords – Within 20 Miles**
+Cities: {", ".join(towns_20mi)}
+
+Each group should include keywords using the format:
+- Business name + service + city + state
+
+Present everything in clean bullet-point format with clear headers. Skip preambles, explanations, or conclusions.
 """
 
-    print(f"Generating GMB keywords for {client_name} in {city}, {state}...")
+    print(f"Generating Branded Keywords for {client_name}...")
 
     response = client.chat.completions.create(
         model="gpt-4",
