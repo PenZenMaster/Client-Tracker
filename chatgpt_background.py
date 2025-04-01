@@ -1,21 +1,17 @@
-# chatgpt_background.py
-
-import os
+from openai import OpenAI
 from dotenv import load_dotenv
-import openai
+import os
 from docx import Document
 
-# Load environment variables from .env file
+# Load API Key
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def run(client_config):
     client_name = client_config["name"]
     output_path = os.path.join(client_config["output_root"], client_name)
     os.makedirs(output_path, exist_ok=True)
 
-    # Handle different input scenarios
     url = client_config.get("url", "").strip()
     gbp_url = client_config.get("gbp_url", "").strip()
 
@@ -26,9 +22,8 @@ def run(client_config):
     elif gbp_url:
         target_info = f"Google Business Profile: {gbp_url}"
     else:
-        raise ValueError("Client config must include either a 'url', 'gbp_url', or both.")
+        raise ValueError("Must include either a 'url' or 'gbp_url'.")
 
-    # Generate prompt
     prompt = (
         "Please review the following business information and provide:\n"
         "- A summary of services offered\n"
@@ -38,7 +33,7 @@ def run(client_config):
 
     print(f"Generating background summary for {client_name}...")
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are an SEO assistant."},
@@ -47,9 +42,8 @@ def run(client_config):
         temperature=0.7
     )
 
-    summary = response["choices"][0]["message"]["content"]
+    summary = response.choices[0].message.content
 
-    # Save to Word doc
     doc = Document()
     doc.add_heading(f"{client_name} – Background Information", 0)
     doc.add_paragraph(summary)
