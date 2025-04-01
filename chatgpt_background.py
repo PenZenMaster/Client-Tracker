@@ -7,15 +7,18 @@ from docx import Document
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+
 def run(client_config):
     client_name = client_config["name"]
-    output_path = os.path.join(client_config["output_root"], client_name)
-    os.makedirs(output_path, exist_ok=True)
+    base_output = client_config["output_root"]
 
-    url = client_config.get("url", "").strip()
-    mobile_url = client_config.get("mobile_url", "").strip()
-    gbp_url = client_config.get("gbp_url", "").strip()
-    address = client_config.get("address", "Unknown")
+    # Only append the client name if it's not already at the end
+    if not base_output.lower().endswith(client_name.lower()):
+        output_path = os.path.join(base_output, client_name)
+    else:
+        output_path = base_output
+
+    os.makedirs(output_path, exist_ok=True)
 
     prompt = (
         f"I am gathering background information about the following local HVAC company. "
@@ -43,7 +46,9 @@ def run(client_config):
     doc = Document()
     doc.add_heading(f"{client_name} – Background Information", 0)
     doc.add_paragraph(summary)
-    output_file = os.path.join(output_path, f"{client_name} background information.docx")
+    output_file = os.path.join(
+        output_path, f"{client_name} background information.docx"
+    )
     doc.save(output_file)
 
     print(f"Saved background info to {output_file}")
