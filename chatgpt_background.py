@@ -1,8 +1,14 @@
 # chatgpt_background.py
 
 import os
+from dotenv import load_dotenv
 import openai
 from docx import Document
+
+# Load environment variables from .env file
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 def run(client_config):
     client_name = client_config["name"]
