@@ -33,10 +33,11 @@ def fetch_paa_questions(keyword, location="us"):
     return questions[:20]
 
 def generate_answer(question, business_name, city, state):
-    prompt = f"Answer the following question as if you are an HVAC contractor named {business_name}, based in {city}, {state}:
+    prompt = f"""Answer the following question as if you are an HVAC contractor named {business_name}, based in {city}, {state}:
 
 Q: {question}
-A:"
+
+A:"""
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[
