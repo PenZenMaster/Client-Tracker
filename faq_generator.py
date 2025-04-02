@@ -12,7 +12,7 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 
 def fetch_paa_questions(keyword, location="us"):
-         print(f"Fetching PAA questions for: {keyword}")
+    print(f"Fetching PAA questions for: {keyword}")
     params = {
         "engine": "google",
         "q": keyword,
