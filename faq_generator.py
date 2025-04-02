@@ -10,17 +10,29 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
+
 def fetch_paa_questions(keyword, location="us"):
-    print(f"Fetching PAA questions for: {keyword}")
+         print(f"Fetching PAA questions for: {keyword}")
     params = {
         "engine": "google",
         "q": keyword,
         "hl": "en",
         "gl": location,
-        "api_key": SERPAPI_KEY
+        "api_key": SERPAPI_KEY,
     }
     res = requests.get("https://serpapi.com/search", params=params)
-    data = res.json()
+    print("SerpAPI status code:", res.status_code)
+
+    try:
+        data = res.json()
+    except Exception as e:
+        print("Error decoding SerpAPI response:", e)
+        return []
+
+    if "error" in data:
+        print("SerpAPI error:", data["error"])
+        return []
+
     questions = []
 
     if "related_questions" in data:
@@ -30,7 +42,9 @@ def fetch_paa_questions(keyword, location="us"):
                 questions.append(question)
             if len(questions) >= 20:
                 break
+
     return questions[:20]
+
 
 def generate_answer(question, business_name, city, state):
     prompt = f"""Answer the following question as if you are an HVAC contractor named {business_name}, based in {city}, {state}:
@@ -41,12 +55,16 @@ A:"""
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[
-            {"role": "system", "content": "You are a helpful, local HVAC expert providing SEO-optimized, conversational answers."},
-            {"role": "user", "content": prompt}
+            {
+                "role": "system",
+                "content": "You are a helpful, local HVAC expert providing SEO-optimized, conversational answers.",
+            },
+            {"role": "user", "content": prompt},
         ],
         temperature=0.7,
     )
     return response.choices[0].message.content.strip()
+
 
 def write_html_accordion(faq_list, business_name, output_path):
     html = f"""<!DOCTYPE html>
@@ -90,7 +108,6 @@ def write_html_accordion(faq_list, business_name, output_path):
     <h1>{business_name} - People Also Ask</h1>
     <div class="accordion">
 """
-
     for i, (q, a) in enumerate(faq_list):
         html += f"""
         <div class="accordion-item">
@@ -116,6 +133,7 @@ def write_html_accordion(faq_list, business_name, output_path):
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
 
+
 def run_faq_generator(client_config):
     business_name = client_config["name"]
     city = client_config["city"]
@@ -134,5 +152,7 @@ def run_faq_generator(client_config):
         faq_list.append((q, answer))
 
     output_file = os.path.join(output_dir, f"{business_name} - FAQs.html")
+    print("Output path:", output_file)
+
     write_html_accordion(faq_list, business_name, output_file)
     print(f"Saved FAQ HTML to: {output_file}")
