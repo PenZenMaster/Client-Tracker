@@ -1,0 +1,23 @@
+{
+  "name": "Rank Rocket",
+  "city": "Mossyrock",
+  "state": "WA",
+  "seed_keyword": "local SEO",
+  "output_root": "C:\\Users\\georg\\OneDrive\\RankRocket",
+  "niche": "seo services",
+  "gbp_url": "https://www.google.com/maps?cid=16009887029081462180",
+  "address": "125 Lake Terrace Dr",
+  "url": "https://rankrocket.co",
+  "mobile_url": "",
+  "services": [
+    "local seo"
+  ],
+  "nearby_10mi": [
+    "Mossyrock Heights",
+    "Mossyrock North"
+  ],
+  "nearby_20mi": [
+    "Mossyrock Valley",
+    "Mossyrock Junction"
+  ]
+}
