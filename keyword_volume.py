@@ -1,16 +1,11 @@
 # Author: Skippy the Magnificent along with that dumb ape, George Penzenik
-# Version: 1.02
-# Date Modified: 19:10 04/03/2025
+# Version: 1.03
+# Date Modified: 19:35 04/03/2025
 # Comment:
-#  - Updated for google-ads v26.0.1 module structure
-#  - Uses centralized `types` imports
+#  - 100% compatible with google-ads v26.0.1
+#  - Uses `client.get_type()` instead of broken imports
 
 from google.ads.googleads.client import GoogleAdsClient
-from google.ads.googleads.types import (
-    GenerateKeywordIdeasRequest,
-    KeywordAndUrlSeed,
-    KeywordPlanNetwork,
-)
 
 
 def fetch_keyword_ideas(
@@ -26,8 +21,13 @@ def fetch_keyword_ideas(
     language_code: default is English (1000)
     geo_targets: default is United States (2840)
     """
-    service = client.get_service("KeywordPlanIdeaService")
+    keyword_plan_service = client.get_service("KeywordPlanIdeaService")
     google_ads_service = client.get_service("GoogleAdsService")
+
+    # Dynamically get the request and seed types
+    GenerateKeywordIdeasRequest = client.get_type("GenerateKeywordIdeasRequest")
+    KeywordAndUrlSeed = client.get_type("KeywordAndUrlSeed")
+    KeywordPlanNetworkEnum = client.get_type("KeywordPlanNetworkEnum")
 
     request = GenerateKeywordIdeasRequest(
         customer_id=customer_id,
@@ -35,7 +35,7 @@ def fetch_keyword_ideas(
         geo_target_constants=[
             google_ads_service.geo_target_constant_path(gt) for gt in geo_targets
         ],
-        keyword_plan_network=KeywordPlanNetwork.GOOGLE_SEARCH,
+        keyword_plan_network=KeywordPlanNetworkEnum.GOOGLE_SEARCH,
         keyword_and_url_seed=KeywordAndUrlSeed(
             url=page_url,
             keywords=seed_keywords,
@@ -43,7 +43,7 @@ def fetch_keyword_ideas(
     )
 
     print("\n📊 Keyword Ideas:")
-    response = service.generate_keyword_ideas(request=request)
+    response = keyword_plan_service.generate_keyword_ideas(request=request)
 
     results = []
     for idea in response:
