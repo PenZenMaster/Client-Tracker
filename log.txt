@@ -1,16 +1,4 @@
-Ok Skippy. Time for some modifications.
-1. Implement a standard comments header to include
-	Author Name: Skippy the Magnificient along with that dumb ape, George Penzenik
-	Version: <start with 1.00 and increment bu .01 each time we modify the code.
-	Date Modified: <24 Hours Time> <MM/DD/YYYY>
-	Comment: <What was done in this version> (For each revision keep all previous comments)
-2. Display the Version Number in the Windows Title Bar
-3. When the selected task(s) are completed display a popup with
-	a. Name of Step:
-	b. Location of File for that step
-4. Implement a Help button. When that help button is clicked display the contents of the Help
-5. Use your awsomeness to create said Help file. Tell the user what the purpose of this incredible application is for. What information they need to be able to run each section.
-6. Make code and UI changes to add https://creativecommons.org/licenses/by-sa/4.0/ Attribution-ShareAlike 4.0 International. Put this information in the Help file and in the comments Header for each file.
-7. IMplement a start up splash screen using this image https://store.podiumaudio.com/collections/exforce-skippys-supply-co and title it "This software is brought to you be Skippy the Magnificient and unfortunetly with some insy weensy help from a meat sack named George Penzenik.
-
-When this is done, recreate all the required files and place them in a zip file for download.
+Tweek
+1. Replace the skippy image with skippy_temagnificient.jpg
+2. Drop the text over lay
+3. Can you have the splash screen and application open centered in the middle of the primary display?
