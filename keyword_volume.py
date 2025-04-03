@@ -1,17 +1,16 @@
 # Author: Skippy the Magnificent along with that dumb ape, George Penzenik
-# Version: 1.01
-# Date Modified: 18:26 04/03/2025
+# Version: 1.02
+# Date Modified: 19:10 04/03/2025
 # Comment:
-#  - Updated imports for google-ads v26+
-#  - Removed deprecated v15 references
+#  - Updated for google-ads v26.0.1 module structure
+#  - Uses centralized `types` imports
 
-import sys
 from google.ads.googleads.client import GoogleAdsClient
-from google.ads.googleads.services.types import (
+from google.ads.googleads.types import (
     GenerateKeywordIdeasRequest,
     KeywordAndUrlSeed,
+    KeywordPlanNetwork,
 )
-from google.ads.googleads.enums.types import KeywordPlanNetwork
 
 
 def fetch_keyword_ideas(
@@ -37,7 +36,10 @@ def fetch_keyword_ideas(
             google_ads_service.geo_target_constant_path(gt) for gt in geo_targets
         ],
         keyword_plan_network=KeywordPlanNetwork.GOOGLE_SEARCH,
-        keyword_and_url_seed=KeywordAndUrlSeed(url=page_url, keywords=seed_keywords),
+        keyword_and_url_seed=KeywordAndUrlSeed(
+            url=page_url,
+            keywords=seed_keywords,
+        ),
     )
 
     print("\n📊 Keyword Ideas:")
@@ -55,9 +57,7 @@ def fetch_keyword_ideas(
 
 
 if __name__ == "__main__":
-    google_ads_config_path = (
-        "google-ads.yaml"  # Make sure this YAML file is set up properly
-    )
+    google_ads_config_path = "google-ads.yaml"
     client = GoogleAdsClient.load_from_storage(google_ads_config_path)
 
     customer_id = "INSERT_YOUR_CUSTOMER_ID"
