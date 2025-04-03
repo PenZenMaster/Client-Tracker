@@ -1,1 +1,6 @@
 37156535763-79hajfra02dtocpef812lhg3fgakgfqi.apps.googleusercontent.com
+
+developer_token: cpgqk_n3ym3yFEXaEkTnpw
+client_id: 37156535763-79hajfra02dtocpef812lhg3fgakgfqi.apps.googleusercontent.com
+client_secret: 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
+refresh_token: 1//06Y_KjUb6aW-SCgYIARAAGAYSNwF-L9IrW1e0ZeeHfqDVKB07JJM6wpBhDwQ2H3t-YH96iZRH3Kf2Qi-8zXw1dygW6oTXvdRCBqI
