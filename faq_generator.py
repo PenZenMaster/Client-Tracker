@@ -1,10 +1,9 @@
 # Author: Skippy the Magnificent along with that dumb ape, George Penzenik
-# Version: 1.02
-# Date Modified: 23:08 04/03/2025
+# Version: 1.04
+# Date Modified: 23:32 04/03/2025
 # Comment:
-#  - Added SerpAPI pagination using `start` param
-#  - Enabled location targeting with SerpAPI `location` param
-#  - Future-proofed for `max_questions` override via config
+#  - Removed broken `location` param from final SerpAPI query (left in by mistake)
+#  - Fully relies on resolved `uule` for geo-targeting
 
 import os
 import requests
@@ -19,10 +18,28 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 
+def resolve_uule(geo_target):
+    print(f"🔍 Resolving uule for: {geo_target}")
+    try:
+        loc_params = {"q": geo_target, "limit": 1, "api_key": SERPAPI_KEY}
+        res = requests.get("https://serpapi.com/locations.json", params=loc_params)
+        data = res.json()
+        if data and isinstance(data, list) and "uule" in data[0]:
+            print(f"✅ uule found: {data[0]['uule']}")
+            return data[0]["uule"]
+        else:
+            print("⚠️ uule not found, defaulting to no geo-targeting")
+            return None
+    except Exception as e:
+        print("❌ Error resolving uule:", e)
+        return None
+
+
 def fetch_paa_questions(
     seed_keyword, location="us", max_questions=20, geo_target="Adrian, MI"
 ):
     print(f"Starting PAA fetch for seed: {seed_keyword}")
+    uule_code = resolve_uule(geo_target)
 
     keyword_variants = [
         seed_keyword,
@@ -47,10 +64,12 @@ def fetch_paa_questions(
                 "q": kw,
                 "hl": "en",
                 "gl": location,
-                "location": geo_target,
                 "start": start,
                 "api_key": SERPAPI_KEY,
             }
+            if uule_code:
+                params["uule"] = uule_code
+
             res = requests.get("https://serpapi.com/search", params=params)
             print("SerpAPI status code:", res.status_code)
 
