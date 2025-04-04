@@ -1,9 +1,10 @@
 # Author: Skippy the Magnificent along with that dumb ape, George Penzenik
-# Version: 1.03
-# Date Modified: 19:35 04/03/2025
+# Version: 1.04
+# Date Modified: 20:12 04/03/2025
 # Comment:
-#  - 100% compatible with google-ads v26.0.1
-#  - Uses `client.get_type()` instead of broken imports
+#  - Fixed proto enum access using .Value("GOOGLE_SEARCH")
+#  - Fully compatible with google-ads v26.0.1
+#  - Fetches live keyword volume for a URL + seed keywords
 
 from google.ads.googleads.client import GoogleAdsClient
 
@@ -24,7 +25,7 @@ def fetch_keyword_ideas(
     keyword_plan_service = client.get_service("KeywordPlanIdeaService")
     google_ads_service = client.get_service("GoogleAdsService")
 
-    # Dynamically get the request and seed types
+    # Dynamically load message and enum types
     GenerateKeywordIdeasRequest = client.get_type("GenerateKeywordIdeasRequest")
     KeywordAndUrlSeed = client.get_type("KeywordAndUrlSeed")
     KeywordPlanNetworkEnum = client.get_type("KeywordPlanNetworkEnum")
@@ -35,7 +36,7 @@ def fetch_keyword_ideas(
         geo_target_constants=[
             google_ads_service.geo_target_constant_path(gt) for gt in geo_targets
         ],
-        keyword_plan_network=KeywordPlanNetworkEnum.GOOGLE_SEARCH,
+        keyword_plan_network=KeywordPlanNetworkEnum.Value("GOOGLE_SEARCH"),
         keyword_and_url_seed=KeywordAndUrlSeed(
             url=page_url,
             keywords=seed_keywords,
@@ -60,7 +61,9 @@ if __name__ == "__main__":
     google_ads_config_path = "google-ads.yaml"
     client = GoogleAdsClient.load_from_storage(google_ads_config_path)
 
-    customer_id = "INSERT_YOUR_CUSTOMER_ID"
+    customer_id = (
+        "INSERT_YOUR_CUSTOMER_ID"  # ← Replace with your real ID like "1234567890"
+    )
     seed_keywords = ["HVAC repair", "air conditioning install", "furnace service"]
     page_url = "https://www.tri-stateheating.com/"
 
