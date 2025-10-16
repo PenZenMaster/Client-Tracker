@@ -1,0 +1,26 @@
+# --- Core Dependencies ---
+pillow
+requests
+openai
+python-dotenv
+
+# --- Google API / Ads ---
+google-ads
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+
+# --- Data Handling ---
+pandas
+openpyxl
+numpy
+
+# --- GUI Framework ---
+# tkinter is built into Python on Windows — DO NOT install via pip
+# Optional GUI add-ons if needed:
+pyqt6
+customtkinter
+
+# --- Logging / Utilities ---
+colorama
