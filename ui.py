@@ -1,13 +1,38 @@
-# Author: Skippy the Magnificent along with that dumb ape, George Penzenik
-# Version: 1.03
-# Date Modified: 00:12 04/04/2025
-# Comment:
-#  - Added full menu bar with File and Help items for meat sack clarity
-#  - Menu includes Exit and Keyword Volume Help
+r"""
+Module/Script Name: ui.py
+Path: E:\projects\Project Tracking\ui.py
+
+Description:
+Shared UI utilities and launcher for Rank Rocket SEO Toolkit. Creates tabbed
+interface with menu bar, help system, and notebook-based tool organization.
+
+Author(s):
+Rank Rocket Co (C) Copyright 2025 - All Rights Reserved
+Original Authors: Skippy the Magnificent, George Penzenik
+
+Created Date:
+2025-04-04
+
+Last Modified Date:
+2025-10-23
+
+Version:
+v1.04
+
+License:
+CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
+
+Comments:
+* v1.04 - Added standardized file header
+* v1.03 - Added full menu bar with File and Help items
+* v1.03 - Menu includes Exit and Keyword Volume Help
+* v1.00 - Initial release with tabbed interface
+"""
 
 import tkinter as tk
 from tkinter import ttk, messagebox
 from keyword_volume_ui import KeywordVolumeTab
+
 
 def launch_ui():
     root = tk.Tk()
@@ -26,14 +51,16 @@ def launch_ui():
         messagebox.showinfo("Help", help_msg)
 
     def show_keyword_volume_help():
-        messagebox.showinfo("Keyword Volume Help",
+        messagebox.showinfo(
+            "Keyword Volume Help",
             "This tab fetches average monthly searches from Google Ads.\n\n"
             "You'll need to enter:\n"
             "- Path to your Google Ads YAML config file\n"
             "- Your Google Customer ID\n"
             "- Your business URL\n"
             "- A list of seed keywords separated by commas\n\n"
-            "Results will show monthly search volume for each keyword.")
+            "Results will show monthly search volume for each keyword.",
+        )
 
     # Menu Bar
     menubar = tk.Menu(root)
@@ -55,6 +82,7 @@ def launch_ui():
     notebook.add(keyword_tab.get_frame(), text="Keyword Volume Checker")
 
     root.mainloop()
+
 
 if __name__ == "__main__":
     launch_ui()

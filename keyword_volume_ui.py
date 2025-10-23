@@ -1,14 +1,37 @@
-# Author: Skippy the Magnificent along with that dumb ape, George Penzenik
-# Version: 1.01
-# Date Modified: 23:52 04/03/2025
-# Comment:
-#  - Added UI tab for Keyword Volume Fetcher
-#  - Provides help text in Barney-style clarity for meat sacks
+r"""
+Module/Script Name: keyword_volume_ui.py
+Path: E:\projects\Project Tracking\keyword_volume_ui.py
 
-import tkinter as tk
+Description:
+Tkinter UI tab for Keyword Volume Checker. Provides form interface for Google Ads
+API configuration and keyword volume fetching with user-friendly help text.
+
+Author(s):
+Rank Rocket Co (C) Copyright 2025 - All Rights Reserved
+Original Authors: Skippy the Magnificent, George Penzenik
+
+Created Date:
+2025-04-03
+
+Last Modified Date:
+2025-10-23
+
+Version:
+v1.02
+
+License:
+CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
+
+Comments:
+* v1.02 - Added standardized file header
+* v1.01 - Added UI tab for Keyword Volume Fetcher with help text
+* v1.00 - Initial release
+"""
+
 from tkinter import ttk, messagebox
 from keyword_volume import fetch_keyword_ideas
 from google.ads.googleads.client import GoogleAdsClient
+
 
 class KeywordVolumeTab:
     def __init__(self, parent):
@@ -18,28 +41,38 @@ class KeywordVolumeTab:
     def build_tab(self):
         row = 0
 
-        ttk.Label(self.frame, text="🔧 Google Ads YAML Config Path:").grid(row=row, column=0, sticky="e", pady=5, padx=5)
+        ttk.Label(self.frame, text="🔧 Google Ads YAML Config Path:").grid(
+            row=row, column=0, sticky="e", pady=5, padx=5
+        )
         self.config_path_entry = ttk.Entry(self.frame, width=60)
         self.config_path_entry.insert(0, "google-ads.yaml")
         self.config_path_entry.grid(row=row, column=1, pady=5, padx=5)
         row += 1
 
-        ttk.Label(self.frame, text="🧾 Google Customer ID:").grid(row=row, column=0, sticky="e", pady=5, padx=5)
+        ttk.Label(self.frame, text="🧾 Google Customer ID:").grid(
+            row=row, column=0, sticky="e", pady=5, padx=5
+        )
         self.customer_id_entry = ttk.Entry(self.frame, width=40)
         self.customer_id_entry.grid(row=row, column=1, pady=5, padx=5)
         row += 1
 
-        ttk.Label(self.frame, text="🌐 Business Page URL:").grid(row=row, column=0, sticky="e", pady=5, padx=5)
+        ttk.Label(self.frame, text="🌐 Business Page URL:").grid(
+            row=row, column=0, sticky="e", pady=5, padx=5
+        )
         self.url_entry = ttk.Entry(self.frame, width=60)
         self.url_entry.grid(row=row, column=1, pady=5, padx=5)
         row += 1
 
-        ttk.Label(self.frame, text="🔍 Seed Keywords (comma-separated):").grid(row=row, column=0, sticky="e", pady=5, padx=5)
+        ttk.Label(self.frame, text="🔍 Seed Keywords (comma-separated):").grid(
+            row=row, column=0, sticky="e", pady=5, padx=5
+        )
         self.keywords_entry = ttk.Entry(self.frame, width=60)
         self.keywords_entry.grid(row=row, column=1, pady=5, padx=5)
         row += 1
 
-        self.fetch_btn = ttk.Button(self.frame, text="Fetch Keyword Volume", command=self.fetch_volume)
+        self.fetch_btn = ttk.Button(
+            self.frame, text="Fetch Keyword Volume", command=self.fetch_volume
+        )
         self.fetch_btn.grid(row=row, column=0, columnspan=2, pady=10)
         row += 1
 
@@ -51,15 +84,21 @@ class KeywordVolumeTab:
             config_path = self.config_path_entry.get().strip()
             customer_id = self.customer_id_entry.get().strip()
             page_url = self.url_entry.get().strip()
-            keywords = [k.strip() for k in self.keywords_entry.get().split(",") if k.strip()]
+            keywords = [
+                k.strip() for k in self.keywords_entry.get().split(",") if k.strip()
+            ]
 
             if not all([config_path, customer_id, page_url, keywords]):
-                raise ValueError("Please fill out ALL fields before fetching keyword volume.")
+                raise ValueError(
+                    "Please fill out ALL fields before fetching keyword volume."
+                )
 
             client = GoogleAdsClient.load_from_storage(config_path)
             results = fetch_keyword_ideas(client, customer_id, page_url, keywords)
 
-            result_str = "\n".join([f"{kw}: {vol} searches/month" for kw, vol in results])
+            result_str = "\n".join(
+                [f"{kw}: {vol} searches/month" for kw, vol in results]
+            )
             messagebox.showinfo("Keyword Volume Results", result_str)
 
         except Exception as e:
