@@ -22,4 +22,9 @@ htmlcov/
 .coverage
 .coverage.*
 coverage.xml
+coverage.json
 *.cover
+
+# Ignore test output and logs
+log.txt
+gmb_keywords.txt

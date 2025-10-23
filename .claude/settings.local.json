@@ -14,7 +14,15 @@
       "Bash(mypy:*)",
       "Bash(pytest tests/ -v --tb=short:*)",
       "Bash(pytest:*)",
-      "Bash(echo:*)"
+      "Bash(echo:*)",
+      "Bash(pip install pre-commit)",
+      "Bash(pre-commit install:*)",
+      "Bash(pre-commit run:*)",
+      "Bash(pip install:*)",
+      "Bash(git reset:*)",
+      "Bash(timeout 30 bash:*)",
+      "Bash(git tag:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
