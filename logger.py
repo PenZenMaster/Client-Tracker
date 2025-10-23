@@ -1,4 +1,31 @@
-# logger.py
+"""
+Module/Script Name: logger.py
+Path: E:\projects\Project Tracking\logger.py
+
+Description:
+Logging system with timestamped event/error tracking and user-friendly error
+explanations. Writes to log.txt and displays error dialogs.
+
+Author(s):
+Rank Rocket Co (C) Copyright 2025 - All Rights Reserved
+
+Created Date:
+2025-04-03
+
+Last Modified Date:
+2025-10-22
+
+Version:
+v1.01
+
+License:
+CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
+
+Comments:
+* v1.01 - Added standardized file header
+* v1.00 - Initial logging system with error explanations
+"""
+
 import traceback
 from datetime import datetime
 import pytz

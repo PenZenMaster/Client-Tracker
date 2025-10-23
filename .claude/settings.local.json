@@ -3,7 +3,8 @@
     "allow": [
       "Read(//e/projects/cloud-stack-generator/**)",
       "Bash(mkdir -p \"E:\\projects\\Project Tracking\\docs\\archive\\checkpoints\")",
-      "Bash(mkdir -p \"E:\\projects\\Project Tracking\\.claude\")"
+      "Bash(mkdir -p \"E:\\projects\\Project Tracking\\.claude\")",
+      "Bash(git add -A)"
     ],
     "deny": [],
     "ask": []

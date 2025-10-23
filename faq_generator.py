@@ -1,9 +1,31 @@
-# Author: Skippy the Magnificent along with that dumb ape, George Penzenik
-# Version: 1.04
-# Date Modified: 23:32 04/03/2025
-# Comment:
-#  - Removed broken `location` param from final SerpAPI query (left in by mistake)
-#  - Fully relies on resolved `uule` for geo-targeting
+"""
+Module/Script Name: faq_generator.py
+Path: E:\projects\Project Tracking\faq_generator.py
+
+Description:
+FAQ content generator using SerpAPI for "People Also Ask" questions and OpenAI
+GPT-4 for answer drafting. Exports FAQ content to DOCX format.
+
+Author(s):
+Rank Rocket Co (C) Copyright 2025 - All Rights Reserved
+
+Created Date:
+2025-04-03
+
+Last Modified Date:
+2025-10-22
+
+Version:
+v1.05
+
+License:
+CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
+
+Comments:
+* v1.05 - Added standardized file header, removed emojis (Windows compat)
+* v1.04 - Removed broken location param from final SerpAPI query
+* v1.04 - Fully relies on resolved uule for geo-targeting
+"""
 
 import os
 import requests
@@ -19,19 +41,19 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 
 def resolve_uule(geo_target):
-    print(f"🔍 Resolving uule for: {geo_target}")
+    print(f"[INFO] Resolving uule for: {geo_target}")
     try:
         loc_params = {"q": geo_target, "limit": 1, "api_key": SERPAPI_KEY}
         res = requests.get("https://serpapi.com/locations.json", params=loc_params)
         data = res.json()
         if data and isinstance(data, list) and "uule" in data[0]:
-            print(f"✅ uule found: {data[0]['uule']}")
+            print(f"[SUCCESS] uule found: {data[0]['uule']}")
             return data[0]["uule"]
         else:
-            print("⚠️ uule not found, defaulting to no geo-targeting")
+            print("[WARNING] uule not found, defaulting to no geo-targeting")
             return None
     except Exception as e:
-        print("❌ Error resolving uule:", e)
+        print("[ERROR] Error resolving uule:", e)
         return None
 
 

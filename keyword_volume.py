@@ -1,10 +1,32 @@
-# Author: Skippy the Magnificent along with that dumb ape, George Penzenik
-# Version: 1.04
-# Date Modified: 20:12 04/03/2025
-# Comment:
-#  - Fixed proto enum access using .Value("GOOGLE_SEARCH")
-#  - Fully compatible with google-ads v26.0.1
-#  - Fetches live keyword volume for a URL + seed keywords
+"""
+Module/Script Name: keyword_volume.py
+Path: E:\projects\Project Tracking\keyword_volume.py
+
+Description:
+Google Ads API integration for keyword research. Fetches keyword ideas with
+search volumes using Keyword Planner API for given URL and seed keywords.
+
+Author(s):
+Rank Rocket Co (C) Copyright 2025 - All Rights Reserved
+
+Created Date:
+2025-04-03
+
+Last Modified Date:
+2025-10-22
+
+Version:
+v1.05
+
+License:
+CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
+
+Comments:
+* v1.05 - Added standardized file header, removed emoji from print (Windows compat)
+* v1.04 - Fixed proto enum access using .Value("GOOGLE_SEARCH")
+* v1.04 - Fully compatible with google-ads v26.0.1
+* v1.04 - Fetches live keyword volume for a URL + seed keywords
+"""
 
 from google.ads.googleads.client import GoogleAdsClient
 
@@ -43,7 +65,7 @@ def fetch_keyword_ideas(
         ),
     )
 
-    print("\n📊 Keyword Ideas:")
+    print("\n[INFO] Keyword Ideas:")
     response = keyword_plan_service.generate_keyword_ideas(request=request)
 
     results = []
