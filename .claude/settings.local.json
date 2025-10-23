@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//e/projects/cloud-stack-generator/**)",
+      "Bash(mkdir -p \"E:\\projects\\Project Tracking\\docs\\archive\\checkpoints\")",
+      "Bash(mkdir -p \"E:\\projects\\Project Tracking\\.claude\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
