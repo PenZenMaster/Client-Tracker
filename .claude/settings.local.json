@@ -8,7 +8,10 @@
       "Bash(git commit -m \"$(cat <<''EOF''\nfeat(headers): add standardized file headers to core modules\n\n- Add standardized headers to main.py, keyword_volume.py, faq_generator.py, logger.py\n- Update version numbers (main v1.11, keyword_volume v1.05, faq_generator v1.05, logger v1.01)\n- Add version display in main window title (v1.11)\n- Replace emojis with ASCII alternatives ([INFO], [SUCCESS], [WARNING], [ERROR])\n- Include CC BY-SA 4.0 license and copyright information\n\nPart of Phase 1: Foundation & Code Quality\nRemaining: 14 modules need header updates\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git push)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(ruff check:*)",
+      "Bash(black:*)",
+      "Bash(mypy:*)"
     ],
     "deny": [],
     "ask": []

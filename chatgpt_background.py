@@ -1,3 +1,31 @@
+r"""
+Module/Script Name: chatgpt_background.py
+Path: E:\projects\Project Tracking\chatgpt_background.py
+
+Description:
+Generates business background summaries using OpenAI GPT-4. Scrapes website content
+and creates comprehensive service and background information documents for SEO clients.
+
+Author(s):
+Rank Rocket Co (C) Copyright 2025 - All Rights Reserved
+
+Created Date:
+2024-01-15
+
+Last Modified Date:
+2025-10-23
+
+Version:
+v1.01
+
+License:
+CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
+
+Comments:
+* v1.01 - Added standardized file header and ASCII-only output
+* v1.00 - Initial release with GPT-4 background generation
+"""
+
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -13,8 +41,6 @@ def run(client_config):
     client_name = client_config["name"]
     address = client_config.get("address", "Unknown")
     url = client_config.get("url", "").strip()
-    mobile_url = client_config.get("mobile_url", "").strip()
-    gbp_url = client_config.get("gbp_url", "").strip()
     base_output = client_config["output_root"]
 
     if not base_output.lower().endswith(client_name.lower()):
