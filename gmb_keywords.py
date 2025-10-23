@@ -64,9 +64,11 @@ def run(config: Dict[str, Any]) -> None:
         >>> run(config)
         Generated 8 keywords.
     """
-    business_name = config.get("name")
+    business_name = config.get("name", "")
     services = config.get("services", [])
-    location = config.get("city") + ", " + config.get("state")
+    city = config.get("city", "")
+    state = config.get("state", "")
+    location = f"{city}, {state}"
 
     # FIXED: Handle services as plain names, not URLs
     service_names: List[str] = [s.strip().title() for s in services if s.strip()]

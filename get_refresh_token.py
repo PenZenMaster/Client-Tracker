@@ -17,20 +17,41 @@ Last Modified Date:
 2025-10-23
 
 Version:
-v1.01
+v1.02
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
 Comments:
+* v1.02 - Added type hints and Google-style docstring
 * v1.01 - Added standardized file header
 * v1.00 - Initial release with OAuth flow for Google Ads
 """
 
-from google_auth_oauthlib.flow import InstalledAppFlow
+from google_auth_oauthlib.flow import InstalledAppFlow  # type: ignore[import-untyped]
 
 
-def generate_refresh_token():
+def generate_refresh_token() -> None:
+    """Generate OAuth 2.0 refresh token for Google Ads API authentication.
+
+    Launches local OAuth flow with consent screen to obtain refresh token.
+    Runs local server on port 8080 to handle OAuth callback.
+
+    The refresh token is printed to console for manual addition to google-ads.yaml.
+
+    Returns:
+        None. Prints refresh token to stdout.
+
+    Example:
+        >>> generate_refresh_token()
+        [Browser opens for Google account selection and consent]
+        SUCCESS! Paste the following into your google-ads.yaml:
+        refresh_token: 1//0gXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+    Security Note:
+        This script contains hardcoded OAuth client credentials. For production use,
+        credentials should be loaded from secure configuration or environment variables.
+    """
     flow = InstalledAppFlow.from_client_config(
         {
             "installed": {

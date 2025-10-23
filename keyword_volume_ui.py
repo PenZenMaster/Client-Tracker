@@ -17,28 +17,56 @@ Last Modified Date:
 2025-10-23
 
 Version:
-v1.02
+v1.03
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
 Comments:
+* v1.03 - Added type hints and Google-style docstrings
 * v1.02 - Added standardized file header
 * v1.01 - Added UI tab for Keyword Volume Fetcher with help text
 * v1.00 - Initial release
 """
 
+import tkinter as tk
 from tkinter import ttk, messagebox
 from keyword_volume import fetch_keyword_ideas
-from google.ads.googleads.client import GoogleAdsClient
+from google.ads.googleads.client import GoogleAdsClient  # type: ignore[import-untyped]
 
 
 class KeywordVolumeTab:
-    def __init__(self, parent):
+    """Tkinter tab interface for Google Ads Keyword Volume Checker.
+
+    Provides form inputs for:
+    - Google Ads YAML config path
+    - Google Customer ID
+    - Business page URL
+    - Seed keywords (comma-separated)
+
+    Fetches and displays keyword search volume data via Google Ads API.
+
+    Attributes:
+        frame: Main ttk.Frame container for the tab
+        config_path_entry: Entry field for google-ads.yaml path
+        customer_id_entry: Entry field for Google Ads customer ID
+        url_entry: Entry field for business website URL
+        keywords_entry: Entry field for comma-separated seed keywords
+        fetch_btn: Button to trigger keyword volume fetch
+        help_btn: Button to show help dialog
+    """
+
+    def __init__(self, parent: tk.Widget) -> None:
+        """Initialize the Keyword Volume tab.
+
+        Args:
+            parent: Parent Tkinter widget (typically ttk.Notebook).
+        """
         self.frame = ttk.Frame(parent)
         self.build_tab()
 
-    def build_tab(self):
+    def build_tab(self) -> None:
+        """Build the tab UI with form inputs and action buttons."""
         row = 0
 
         ttk.Label(self.frame, text="🔧 Google Ads YAML Config Path:").grid(
@@ -79,7 +107,16 @@ class KeywordVolumeTab:
         self.help_btn = ttk.Button(self.frame, text="Help", command=self.show_help)
         self.help_btn.grid(row=row, column=0, columnspan=2)
 
-    def fetch_volume(self):
+    def fetch_volume(self) -> None:
+        """Fetch keyword volume data from Google Ads API and display results.
+
+        Validates form inputs, loads Google Ads client, fetches keyword ideas,
+        and displays results in a messagebox. Shows error dialog on failure.
+
+        Raises:
+            ValueError: If any required form field is empty.
+            Exception: For Google Ads API errors or configuration issues.
+        """
         try:
             config_path = self.config_path_entry.get().strip()
             customer_id = self.customer_id_entry.get().strip()
@@ -104,7 +141,8 @@ class KeywordVolumeTab:
         except Exception as e:
             messagebox.showerror("Error Fetching Keywords", str(e))
 
-    def show_help(self):
+    def show_help(self) -> None:
+        """Display help dialog explaining the Keyword Volume Checker tool."""
         help_msg = (
             "🧠 WHAT THIS DOES:\n"
             "This tool checks how many people are searching for your chosen keywords using Google Ads' Keyword Planner.\n\n"
@@ -119,5 +157,10 @@ class KeywordVolumeTab:
         )
         messagebox.showinfo("Keyword Volume Help", help_msg)
 
-    def get_frame(self):
+    def get_frame(self) -> ttk.Frame:
+        """Return the main frame widget for this tab.
+
+        Returns:
+            The ttk.Frame containing all tab UI elements.
+        """
         return self.frame

@@ -14,15 +14,16 @@ Created Date:
 2025-04-03
 
 Last Modified Date:
-2025-10-22
+2025-10-23
 
 Version:
-v1.11
+v1.12
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
 Comments:
+* v1.12 - Added type hints and Google-style docstrings
 * v1.11 - Added standardized file header and version display in title
 * v1.10 - Full GUI launcher with all available Skippy tools
 """
@@ -30,15 +31,36 @@ Comments:
 import tkinter as tk
 from tkinter import ttk
 from keyword_volume_ui import KeywordVolumeTab
-from run_chatgpt_background import BackgroundSummaryTab
-from run_gmb_keywords import GMBKeywordTab
-from run_faq_generator import FAQTab
+from run_chatgpt_background import BackgroundSummaryTab  # type: ignore[attr-defined]
+from run_gmb_keywords import GMBKeywordTab  # type: ignore[attr-defined]
+from run_faq_generator import FAQTab  # type: ignore[attr-defined]
 from logger import log_event
 
 
-def launch_ui():
+def launch_ui() -> None:
+    """Launch the main Rank Rocket SEO Toolkit GUI application.
+
+    Creates a Tkinter window with 800x600 pixel dimensions and tabbed notebook
+    interface containing four SEO tools:
+    1. Keyword Volume Checker - Google Ads API keyword research
+    2. Business Description Generator - GPT-4 business summaries
+    3. GMB Keyword Generator - Google Business Profile keyword variants
+    4. FAQ Generator - SerpAPI + GPT-4 FAQ content creation
+
+    Each tab is dynamically loaded and logged on initialization.
+
+    Returns:
+        None. Runs Tkinter main loop until application is closed.
+
+    Example:
+        >>> launch_ui()
+        [GUI window opens with 4 tabs and runs until closed]
+
+    Note:
+        Tab loading events are logged to log.txt via logger module.
+    """
     root = tk.Tk()
-    root.title("Rank Rocket: Skippy's SEO Toolkit v1.11")
+    root.title("Rank Rocket: Skippy's SEO Toolkit v1.12")
     root.geometry("800x600")
 
     notebook = ttk.Notebook(root)

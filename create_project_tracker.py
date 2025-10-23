@@ -16,20 +16,32 @@ Last Modified Date:
 2025-10-23
 
 Version:
-v1.01
+v1.02
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
 Comments:
+* v1.02 - Added type hints and improved documentation
 * v1.01 - Added standardized file header
 * v1.00 - Initial release with openpyxl project tracker
+
+Module Functions:
+    Creates an Excel workbook (ProjectTracker.xlsx) with three sheets:
+    1. Tasks - Main task list with status dropdown validation
+    2. Lists - Data validation source for status values
+    3. Summary - Metrics dashboard with completion percentage and pie chart
+
+Usage:
+    Run directly to create ProjectTracker.xlsx in current directory:
+    $ python create_project_tracker.py
 """
 
-from openpyxl import Workbook
-from openpyxl.worksheet.datavalidation import DataValidation
-from openpyxl.chart import PieChart, Reference
+from openpyxl import Workbook  # type: ignore[import-untyped]
+from openpyxl.worksheet.datavalidation import DataValidation  # type: ignore[import-untyped]
+from openpyxl.chart import PieChart, Reference  # type: ignore[import-untyped]
 
+# Initialize workbook
 wb = Workbook()
 ws_tasks = wb.active
 ws_tasks.title = "Tasks"

@@ -16,19 +16,22 @@ Last Modified Date:
 2025-10-23
 
 Version:
-v1.01
+v1.02
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
 Comments:
+* v1.02 - Added type hints for config dictionary
 * v1.01 - Added standardized file header
 * v1.00 - Initial release with example client config
 """
 
+from typing import Dict, Any
 from faq_generator import run_faq_generator
 
-client_config = {
+# Example client configuration for FAQ generation
+client_config: Dict[str, Any] = {
     "name": "Tri-State Heating & Cooling, LLC",
     "city": "Adrian",
     "state": "MI",
