@@ -27,7 +27,7 @@ Comments:
 * v1.00 - Initial release with BeautifulSoup scraping
 """
 
-import requests
+import requests  # type: ignore[import-untyped]
 from bs4 import BeautifulSoup
 from typing import List
 

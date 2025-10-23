@@ -16,20 +16,22 @@ Last Modified Date:
 2025-10-23
 
 Version:
-v1.01
+v1.02
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
 Comments:
+* v1.02 - Added type hints and Google-style docstrings
 * v1.01 - Added standardized file header and ASCII-only output
 * v1.00 - Initial release with GPT-4 background generation
 """
 
 import os
+from typing import Dict, Any
 from openai import OpenAI
 from dotenv import load_dotenv
-from docx import Document
+from docx import Document  # type: ignore[import-not-found]
 from scraper import scrape_website_text
 
 # Load API Key from .env
@@ -37,7 +39,39 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-def run(client_config):
+def run(client_config: Dict[str, Any]) -> None:
+    """Generate business background summary document using GPT-4.
+
+    Scrapes website content and uses OpenAI GPT-4 to create a comprehensive
+    business summary document for SEO client onboarding and content strategy.
+
+    Workflow:
+    1. Scrapes text from client website URL
+    2. Sends scraped content to GPT-4 with business context
+    3. Generates professional background summary
+    4. Saves summary to DOCX file in client output directory
+
+    Args:
+        client_config: Configuration dictionary containing:
+            - name (str): Business name
+            - address (str, optional): Business address. Defaults to "Unknown"
+            - url (str, optional): Website URL to scrape. Defaults to ""
+            - output_root (str): Base output directory path
+
+    Returns:
+        None. Writes DOCX file to: {output_root}/{name}/{name} background information.docx
+
+    Example:
+        >>> config = {
+        ...     "name": "ABC Heating & Cooling",
+        ...     "address": "123 Main St, Phoenix, AZ 85001",
+        ...     "url": "https://www.abchvac.com",
+        ...     "output_root": "./output"
+        ... }
+        >>> run(config)
+        Generating background summary for ABC Heating & Cooling...
+        Saved background info to ./output/ABC Heating & Cooling/ABC Heating & Cooling background information.docx
+    """
     client_name = client_config["name"]
     address = client_config.get("address", "Unknown")
     url = client_config.get("url", "").strip()

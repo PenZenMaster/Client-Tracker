@@ -13,22 +13,24 @@ Created Date:
 2025-04-03
 
 Last Modified Date:
-2025-10-22
+2025-10-23
 
 Version:
-v1.05
+v1.06
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
 Comments:
+* v1.06 - Added type hints and Google-style docstrings
 * v1.05 - Added standardized file header, removed emojis (Windows compat)
 * v1.04 - Removed broken location param from final SerpAPI query
 * v1.04 - Fully relies on resolved uule for geo-targeting
 """
 
 import os
-import requests
+from typing import Dict, Any, List, Tuple, Optional
+import requests  # type: ignore[import-untyped]
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -40,7 +42,19 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 
-def resolve_uule(geo_target):
+def resolve_uule(geo_target: str) -> Optional[str]:
+    """Resolve geographic location to Google UULE (Unique User Location Encoding).
+
+    Args:
+        geo_target: Location string (e.g., "Adrian, MI", "Phoenix, AZ").
+
+    Returns:
+        UULE code string for SerpAPI geo-targeting, or None if resolution fails.
+
+    Example:
+        >>> resolve_uule("Phoenix, AZ")
+        'w+CAIQICI...'
+    """
     print(f"[INFO] Resolving uule for: {geo_target}")
     try:
         loc_params = {"q": geo_target, "limit": 1, "api_key": SERPAPI_KEY}
@@ -58,8 +72,32 @@ def resolve_uule(geo_target):
 
 
 def fetch_paa_questions(
-    seed_keyword, location="us", max_questions=20, geo_target="Adrian, MI"
-):
+    seed_keyword: str,
+    location: str = "us",
+    max_questions: int = 20,
+    geo_target: str = "Adrian, MI",
+) -> List[str]:
+    """Fetch 'People Also Ask' questions from Google search results via SerpAPI.
+
+    Queries multiple keyword variants and pagination to collect unique questions
+    from Google's "People Also Ask" feature for SEO FAQ content generation.
+
+    Args:
+        seed_keyword: Primary keyword to base question research on.
+        location: Two-letter country code for search region. Defaults to "us".
+        max_questions: Maximum number of unique questions to collect. Defaults to 20.
+        geo_target: City/state for local geo-targeting (e.g., "Adrian, MI").
+
+    Returns:
+        List of unique question strings from PAA results, limited to max_questions.
+
+    Example:
+        >>> questions = fetch_paa_questions("hvac repair", geo_target="Phoenix, AZ")
+        >>> print(len(questions))
+        20
+        >>> print(questions[0])
+        'How much does HVAC repair cost?'
+    """
     print(f"Starting PAA fetch for seed: {seed_keyword}")
     uule_code = resolve_uule(geo_target)
 
@@ -72,8 +110,8 @@ def fetch_paa_questions(
         f"what to know about {seed_keyword}",
     ]
 
-    questions = []
-    seen = set()
+    questions: List[str] = []
+    seen: set[str] = set()
 
     for kw in keyword_variants:
         for start in [0, 10, 20]:
@@ -119,7 +157,30 @@ def fetch_paa_questions(
     return questions[:max_questions]
 
 
-def generate_answer(question, business_name, city, state):
+def generate_answer(question: str, business_name: str, city: str, state: str) -> str:
+    """Generate SEO-optimized answer to a question using OpenAI GPT-4.
+
+    Creates conversational, locally-targeted answers as if from the business perspective.
+
+    Args:
+        question: Question text to answer (typically from PAA results).
+        business_name: Name of the business to answer as.
+        city: City where business is located.
+        state: State where business is located.
+
+    Returns:
+        Generated answer text as a string.
+
+    Example:
+        >>> answer = generate_answer(
+        ...     "How much does HVAC repair cost?",
+        ...     "ABC Heating",
+        ...     "Phoenix",
+        ...     "AZ"
+        ... )
+        >>> print(answer[:50])
+        'HVAC repair costs can vary depending on the type...'
+    """
     prompt = f"""Answer the following question as if you are an HVAC contractor named {business_name}, based in {city}, {state}:
 
 Q: {question}
@@ -136,10 +197,30 @@ A:"""
         ],
         temperature=0.7,
     )
-    return response.choices[0].message.content.strip()
+    content = response.choices[0].message.content
+    return content.strip() if content else ""
 
 
-def write_html_accordion(faq_list, business_name, output_path):
+def write_html_accordion(
+    faq_list: List[Tuple[str, str]], business_name: str, output_path: str
+) -> None:
+    """Write FAQ question/answer pairs to an HTML accordion file.
+
+    Generates an interactive HTML page with collapsible FAQ sections using
+    vanilla JavaScript. Output styled with inline CSS for portability.
+
+    Args:
+        faq_list: List of (question, answer) tuples.
+        business_name: Business name for page title and heading.
+        output_path: Full file path where HTML should be saved.
+
+    Returns:
+        None. Writes HTML file to disk.
+
+    Example:
+        >>> faq_list = [("What is HVAC?", "HVAC stands for...")]
+        >>> write_html_accordion(faq_list, "ABC Heating", "./output/faq.html")
+    """
     html = f"""<!DOCTYPE html>
 <html lang=\"en\">
 <head>
@@ -180,7 +261,38 @@ def write_html_accordion(faq_list, business_name, output_path):
         f.write(html)
 
 
-def run_faq_generator(client_config):
+def run_faq_generator(client_config: Dict[str, Any]) -> None:
+    """Execute complete FAQ generation workflow for a client.
+
+    Main orchestration function that:
+    1. Fetches PAA questions from Google via SerpAPI
+    2. Generates answers using OpenAI GPT-4
+    3. Writes HTML accordion file with all Q&A pairs
+
+    Args:
+        client_config: Configuration dictionary containing:
+            - name (str): Business name
+            - city (str): City name
+            - state (str): State abbreviation
+            - seed_keyword (str): Primary keyword for question research
+            - output_root (str): Base output directory path
+            - max_questions (int, optional): Max questions to generate. Defaults to 20.
+
+    Returns:
+        None. Writes HTML file to: {output_root}/{name}/G Site/{name} - FAQs.html
+
+    Example:
+        >>> config = {
+        ...     "name": "ABC Heating",
+        ...     "city": "Phoenix",
+        ...     "state": "AZ",
+        ...     "seed_keyword": "hvac repair",
+        ...     "output_root": "./output",
+        ...     "max_questions": 15
+        ... }
+        >>> run_faq_generator(config)
+        [INFO] Saved FAQ HTML to: ./output/ABC Heating/G Site/ABC Heating - FAQs.html
+    """
     business_name = client_config["name"]
     city = client_config["city"]
     state = client_config["state"]
