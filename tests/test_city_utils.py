@@ -1,6 +1,5 @@
 """Unit tests for city_utils module."""
 
-import pytest
 from city_utils import handle_city_inputs
 
 

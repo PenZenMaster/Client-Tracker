@@ -1,6 +1,5 @@
 """Unit tests for gmb_keywords module."""
 
-import pytest
 import tempfile
 import os
 from gmb_keywords import run
@@ -17,7 +16,7 @@ class TestGMBKeywords:
                 "services": ["AC Repair"],
                 "city": "Phoenix",
                 "state": "AZ",
-                "output_root": tmpdir
+                "output_root": tmpdir,
             }
 
             run(config)
@@ -43,7 +42,7 @@ class TestGMBKeywords:
                 "services": ["pipe repair", "drain cleaning", "water heater"],
                 "city": "Austin",
                 "state": "TX",
-                "output_root": tmpdir
+                "output_root": tmpdir,
             }
 
             run(config)
@@ -63,7 +62,7 @@ class TestGMBKeywords:
                 "services": ["hvac repair", "PLUMBING", "ElEcTrIcAl"],
                 "city": "Denver",
                 "state": "CO",
-                "output_root": tmpdir
+                "output_root": tmpdir,
             }
 
             run(config)
@@ -84,7 +83,7 @@ class TestGMBKeywords:
                 "services": ["  cleaning  ", " repair ", "maintenance"],
                 "city": "Boston",
                 "state": "MA",
-                "output_root": tmpdir
+                "output_root": tmpdir,
             }
 
             run(config)
@@ -104,7 +103,7 @@ class TestGMBKeywords:
                 "services": ["service1", "", "  ", "service2"],
                 "city": "Seattle",
                 "state": "WA",
-                "output_root": tmpdir
+                "output_root": tmpdir,
             }
 
             run(config)
@@ -124,7 +123,7 @@ class TestGMBKeywords:
                 "services": [],
                 "city": "Portland",
                 "state": "OR",
-                "output_root": tmpdir
+                "output_root": tmpdir,
             }
 
             run(config)
@@ -142,7 +141,7 @@ class TestGMBKeywords:
             "name": "Default Test",
             "services": ["service"],
             "city": "Miami",
-            "state": "FL"
+            "state": "FL",
             # No output_root specified
         }
 
@@ -168,7 +167,7 @@ class TestGMBKeywords:
                 "services": ["test service"],
                 "city": "New York",
                 "state": "NY",
-                "output_root": tmpdir
+                "output_root": tmpdir,
             }
 
             run(config)
@@ -187,7 +186,7 @@ class TestGMBKeywords:
                 "services": ["Widget Repair"],
                 "city": "Chicago",
                 "state": "IL",
-                "output_root": tmpdir
+                "output_root": tmpdir,
             }
 
             run(config)
@@ -210,7 +209,7 @@ class TestGMBKeywords:
                 "services": ["Café Repair"],
                 "city": "San José",
                 "state": "CA",
-                "output_root": tmpdir
+                "output_root": tmpdir,
             }
 
             run(config)

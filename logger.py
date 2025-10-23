@@ -30,7 +30,6 @@ Comments:
 import traceback
 from datetime import datetime
 from tkinter import messagebox
-from typing import Any
 
 LOG_FILE = "log.txt"
 

@@ -1,10 +1,9 @@
 """Unit tests for logger module."""
 
-import pytest
 import tempfile
 import os
-from unittest.mock import patch, MagicMock
-from logger import log_event, log_error, explain_error, LOG_FILE
+from unittest.mock import patch
+from logger import log_event, log_error, explain_error
 
 
 class TestLogger:
@@ -12,14 +11,14 @@ class TestLogger:
 
     def test_log_event_writes_to_file(self):
         """Test that log_event writes message to log file."""
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
             temp_log = f.name
 
         try:
-            with patch('logger.LOG_FILE', temp_log):
+            with patch("logger.LOG_FILE", temp_log):
                 log_event("Test event message")
 
-            with open(temp_log, 'r', encoding='utf-8') as f:
+            with open(temp_log, "r", encoding="utf-8") as f:
                 content = f.read()
 
             assert "Test event message" in content
@@ -30,14 +29,14 @@ class TestLogger:
 
     def test_log_event_includes_timestamp(self):
         """Test that log_event includes timestamp."""
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
             temp_log = f.name
 
         try:
-            with patch('logger.LOG_FILE', temp_log):
+            with patch("logger.LOG_FILE", temp_log):
                 log_event("Timestamped event")
 
-            with open(temp_log, 'r', encoding='utf-8') as f:
+            with open(temp_log, "r", encoding="utf-8") as f:
                 content = f.read()
 
             # Check for timestamp format [YYYY-MM-DD HH:MM:SS]
@@ -48,18 +47,18 @@ class TestLogger:
             if os.path.exists(temp_log):
                 os.unlink(temp_log)
 
-    @patch('logger.messagebox.showerror')
+    @patch("logger.messagebox.showerror")
     def test_log_error_writes_error_to_file(self, mock_msgbox):
         """Test that log_error writes error details to log file."""
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
             temp_log = f.name
 
         try:
-            with patch('logger.LOG_FILE', temp_log):
+            with patch("logger.LOG_FILE", temp_log):
                 error = ValueError("Test error")
                 log_error("Test Context", error)
 
-            with open(temp_log, 'r', encoding='utf-8') as f:
+            with open(temp_log, "r", encoding="utf-8") as f:
                 content = f.read()
 
             assert "ERROR in Test Context" in content
@@ -69,14 +68,14 @@ class TestLogger:
             if os.path.exists(temp_log):
                 os.unlink(temp_log)
 
-    @patch('logger.messagebox.showerror')
+    @patch("logger.messagebox.showerror")
     def test_log_error_shows_message_box(self, mock_msgbox):
         """Test that log_error displays error message box."""
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
             temp_log = f.name
 
         try:
-            with patch('logger.LOG_FILE', temp_log):
+            with patch("logger.LOG_FILE", temp_log):
                 error = KeyError("missing_key")
                 log_error("Config Error", error)
 
@@ -124,6 +123,7 @@ class TestLogger:
 
     def test_explain_error_custom_exception(self):
         """Test error explanation for custom exception type."""
+
         class CustomError(Exception):
             pass
 
@@ -133,20 +133,20 @@ class TestLogger:
         # Should return generic message for unknown error types
         assert "unexpected error occurred" in explanation
 
-    @patch('logger.messagebox.showerror')
+    @patch("logger.messagebox.showerror")
     def test_log_error_includes_traceback(self, mock_msgbox):
         """Test that log_error includes full traceback."""
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
             temp_log = f.name
 
         try:
-            with patch('logger.LOG_FILE', temp_log):
+            with patch("logger.LOG_FILE", temp_log):
                 try:
                     raise ValueError("Test error with traceback")
                 except ValueError as e:
                     log_error("Traceback Test", e)
 
-            with open(temp_log, 'r', encoding='utf-8') as f:
+            with open(temp_log, "r", encoding="utf-8") as f:
                 content = f.read()
 
             # Traceback should be present
@@ -157,15 +157,15 @@ class TestLogger:
 
     def test_log_event_appends_to_existing_file(self):
         """Test that log_event appends to existing log file."""
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
             temp_log = f.name
 
         try:
-            with patch('logger.LOG_FILE', temp_log):
+            with patch("logger.LOG_FILE", temp_log):
                 log_event("First message")
                 log_event("Second message")
 
-            with open(temp_log, 'r', encoding='utf-8') as f:
+            with open(temp_log, "r", encoding="utf-8") as f:
                 lines = f.readlines()
 
             # Should have two log entries
@@ -176,14 +176,14 @@ class TestLogger:
             if os.path.exists(temp_log):
                 os.unlink(temp_log)
 
-    @patch('logger.messagebox.showerror')
+    @patch("logger.messagebox.showerror")
     def test_log_error_message_box_content(self, mock_msgbox):
         """Test that error message box contains correct information."""
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
             temp_log = f.name
 
         try:
-            with patch('logger.LOG_FILE', temp_log):
+            with patch("logger.LOG_FILE", temp_log):
                 error = FileNotFoundError("config.json")
                 log_error("File Load", error)
 

@@ -40,7 +40,7 @@ class TestConfigHandler:
             if os.path.exists(temp_path):
                 os.unlink(temp_path)
 
-    @patch('logger.messagebox.showerror')
+    @patch("logger.messagebox.showerror")
     def test_load_nonexistent_file_raises_error(self, mock_msgbox):
         """Test that loading a non-existent file raises an exception."""
         with pytest.raises(Exception):
@@ -86,7 +86,7 @@ class TestConfigHandler:
             if os.path.exists(temp_path):
                 os.unlink(temp_path)
 
-    @patch('config_handler.filedialog.asksaveasfilename')
+    @patch("config_handler.filedialog.asksaveasfilename")
     def test_save_config_without_filename_uses_dialog(self, mock_dialog):
         """Test that save_config opens dialog when filename not provided."""
         mock_dialog.return_value = None  # User cancels dialog
@@ -99,7 +99,7 @@ class TestConfigHandler:
         # Verify dialog was called
         mock_dialog.assert_called_once()
 
-    @patch('config_handler.filedialog.asksaveasfilename')
+    @patch("config_handler.filedialog.asksaveasfilename")
     def test_save_config_dialog_with_user_selection(self, mock_dialog):
         """Test save_config saves to user-selected path from dialog."""
         with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
@@ -118,7 +118,7 @@ class TestConfigHandler:
             if os.path.exists(temp_path):
                 os.unlink(temp_path)
 
-    @patch('logger.messagebox.showerror')
+    @patch("logger.messagebox.showerror")
     def test_load_config_with_malformed_json(self, mock_msgbox):
         """Test that load_config handles malformed JSON gracefully."""
         with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
@@ -132,7 +132,7 @@ class TestConfigHandler:
             if os.path.exists(temp_path):
                 os.unlink(temp_path)
 
-    @patch('config_handler.log_error')
+    @patch("config_handler.log_error")
     def test_save_config_logs_errors(self, mock_log_error):
         """Test that save_config logs errors when they occur."""
         # Try to save to invalid path
@@ -146,7 +146,7 @@ class TestConfigHandler:
         mock_log_error.assert_called_once()
         assert mock_log_error.call_args[0][0] == "Save Config"
 
-    @patch('config_handler.log_error')
+    @patch("config_handler.log_error")
     def test_load_config_logs_errors(self, mock_log_error):
         """Test that load_config logs errors when they occur."""
         with pytest.raises(Exception):
