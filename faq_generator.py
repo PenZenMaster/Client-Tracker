@@ -57,8 +57,12 @@ def resolve_uule(geo_target: str) -> Optional[str]:
     """
     print(f"[INFO] Resolving uule for: {geo_target}")
     try:
-        loc_params = {"q": geo_target, "limit": 1, "api_key": SERPAPI_KEY}
-        res = requests.get("https://serpapi.com/locations.json", params=loc_params)
+        loc_params: dict[str, Any] = {
+            "q": geo_target,
+            "limit": 1,
+            "api_key": SERPAPI_KEY,
+        }
+        res = requests.get("https://serpapi.com/locations.json", params=loc_params)  # type: ignore[arg-type]
         data = res.json()
         if data and isinstance(data, list) and "uule" in data[0]:
             print(f"[SUCCESS] uule found: {data[0]['uule']}")
@@ -119,7 +123,7 @@ def fetch_paa_questions(
                 break
 
             print(f"Fetching for variant: {kw} (start={start})")
-            params = {
+            params: dict[str, Any] = {
                 "engine": "google",
                 "q": kw,
                 "hl": "en",
@@ -130,7 +134,7 @@ def fetch_paa_questions(
             if uule_code:
                 params["uule"] = uule_code
 
-            res = requests.get("https://serpapi.com/search", params=params)
+            res = requests.get("https://serpapi.com/search", params=params)  # type: ignore[arg-type]
             print("SerpAPI status code:", res.status_code)
 
             try:
