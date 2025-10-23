@@ -29,6 +29,9 @@ colorama
 beautifulsoup4
 lxml
 
+# --- Document Generation ---
+python-docx
+
 # --- Testing & Code Quality ---
 pytest
 pytest-cov
