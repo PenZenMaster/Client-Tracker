@@ -16,3 +16,10 @@ __pycache__/
 *.docx
 *.zip
 *.xlsx
+
+# Ignore test coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover

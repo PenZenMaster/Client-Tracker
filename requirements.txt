@@ -24,3 +24,14 @@ customtkinter
 
 # --- Logging / Utilities ---
 colorama
+
+# --- Web Scraping ---
+beautifulsoup4
+lxml
+
+# --- Testing & Code Quality ---
+pytest
+pytest-cov
+mypy
+ruff
+black

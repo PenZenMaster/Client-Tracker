@@ -1,4 +1,12 @@
 Tweek
 1. Replace the skippy image with skippy_temagnificient.jpg
 2. Drop the text over lay
-3. Can you have the splash screen and application open centered in the middle of the primary display?
+3. Can you have the splash screen and application open centered in the middle of the primary display?[2025-10-23 10:15:58] ERROR in Load Config: FileNotFoundError(2, 'No such file or directory')
+Traceback (most recent call last):
+  File "E:\projects\Project Tracking\config_handler.py", line 90, in load_config
+    with open(filepath, "r", encoding="utf-8") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'nonexistent_file.json'
+
+Explanation: File not found. Make sure the file exists and the path is correct.
+

@@ -11,7 +11,10 @@
       "Bash(git commit:*)",
       "Bash(ruff check:*)",
       "Bash(black:*)",
-      "Bash(mypy:*)"
+      "Bash(mypy:*)",
+      "Bash(pytest tests/ -v --tb=short:*)",
+      "Bash(pytest:*)",
+      "Bash(echo:*)"
     ],
     "deny": [],
     "ask": []
