@@ -13,10 +13,10 @@ Created Date:
 2024-01-15
 
 Last Modified Date:
-2025-10-23
+2026-04-23
 
 Version:
-v1.02
+v1.03
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
@@ -48,4 +48,5 @@ client_config: Dict[str, Any] = {
     "nearby_20mi": ["Toledo", "Wauseon", "Jackson", "Brighton", "Ypsilanti"],
 }
 
-run(client_config)
+if __name__ == "__main__":
+    run(client_config)

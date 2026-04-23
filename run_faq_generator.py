@@ -39,4 +39,5 @@ client_config: Dict[str, Any] = {
     "output_root": r"C:\Users\georg\OneDrive\RankRocket\Clients\Patrick Rombyer",
 }
 
-run_faq_generator(client_config)
+if __name__ == "__main__":
+    run_faq_generator(client_config)

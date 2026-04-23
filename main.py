@@ -14,10 +14,10 @@ Created Date:
 2025-04-03
 
 Last Modified Date:
-2025-10-23
+2026-04-23
 
 Version:
-v1.12
+v1.13
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
@@ -31,9 +31,9 @@ Comments:
 import tkinter as tk
 from tkinter import ttk
 from keyword_volume_ui import KeywordVolumeTab
-from run_chatgpt_background import BackgroundSummaryTab  # type: ignore[attr-defined]
-from run_gmb_keywords import GMBKeywordTab  # type: ignore[attr-defined]
-from run_faq_generator import FAQTab  # type: ignore[attr-defined]
+from chatgpt_background_ui import BackgroundSummaryTab
+from gmb_keywords_ui import GMBKeywordTab
+from faq_generator_ui import FAQTab
 from logger import log_event
 
 
@@ -76,7 +76,7 @@ def launch_ui() -> None:
     for label, tab_class in tabs:
         log_event(f"Loading tab: {label}")
         tab = tab_class(notebook)
-        notebook.add(tab.get_frame(), text=label)
+        notebook.add(tab.get_frame(), text=label)  # type: ignore[attr-defined]
 
     root.mainloop()
 
