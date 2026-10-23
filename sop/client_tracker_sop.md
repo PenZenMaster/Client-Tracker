@@ -57,7 +57,7 @@ client_config = {
     "url": "https://www.tri-stateheating.com/",
     "mobile_url": "https://www.tristate-hvac.com/",
     "gbp_url": "https://g.co/kgs/j3Bb4gy",
-    "output_root": r"C:\Users\georg\OneDrive\RankRocket\Clients\Patrick Rombyer"
+    "output_root": str(Path.home() / "OneDrive" / "RankRocket" / "Clients" / "patrick_rombyer")
 }
 ```
 
@@ -72,7 +72,7 @@ python run_chatgpt_background.py
 - A Word doc is saved to:
 
 ```
-C:/Users/georg/OneDrive/RankRocket/Clients/Patrick Rombyer/<Client Name>/
+%USERPROFILE%/OneDrive/RankRocket/Clients/patrick_rombyer/<Client Name>/
 └── <Client Name> background information.docx
 ```
 
@@ -95,7 +95,7 @@ client_config = {
     "city": "Adrian",
     "state": "MI",
     "gbp_url": "https://www.google.com/maps?cid=3560100286428651288",
-    "output_root": r"C:\Users\georg\OneDrive\RankRocket\Clients\Patrick Rombyer",
+    "output_root": str(Path.home() / "OneDrive" / "RankRocket" / "Clients" / "patrick_rombyer"),
     "services": [
         "https://www.tri-stateheating.com/services/commercial-hvac-services/",
         "https://www.tri-stateheating.com/services/hvac-installers/",
@@ -133,7 +133,7 @@ python run_gmb_keywords.py
 - GMB Keywords are saved to:
 
 ```
-C:/Users/georg/OneDrive/RankRocket/Clients/Patrick Rombyer/<Client Name>/
+%USERPROFILE%/OneDrive/RankRocket/Clients/patrick_rombyer/<Client Name>/
 └── GMB Keywords.txt
 ```
 

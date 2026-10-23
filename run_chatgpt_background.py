@@ -13,20 +13,22 @@ Created Date:
 2024-01-15
 
 Last Modified Date:
-2026-04-23
+2026-10-23
 
 Version:
-v1.03
+v1.04
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
 Comments:
+* v1.04 - Derive output_root from Path.home() (client folder renamed to patrick_rombyer)
 * v1.02 - Added type hints for config dictionary
 * v1.01 - Added standardized file header
 * v1.00 - Initial release with example client config
 """
 
+from pathlib import Path
 from typing import Dict, Any
 from chatgpt_background import run
 
@@ -37,7 +39,9 @@ client_config: Dict[str, Any] = {
     "url": "https://www.tri-stateheating.com/",
     "mobile_url": "https://www.tristate-hvac.com/",
     "gbp_url": "https://g.co/kgs/j3Bb4gy",
-    "output_root": r"C:\Users\georg\OneDrive\RankRocket\Clients\Patrick Rombyer",
+    "output_root": str(
+        Path.home() / "OneDrive" / "RankRocket" / "Clients" / "patrick_rombyer"
+    ),
 }
 
 if __name__ == "__main__":

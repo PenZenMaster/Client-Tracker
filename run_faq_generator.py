@@ -13,20 +13,22 @@ Created Date:
 2024-01-15
 
 Last Modified Date:
-2025-10-23
+2026-10-23
 
 Version:
-v1.02
+v1.03
 
 License:
 CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
 Comments:
+* v1.03 - Derive output_root from Path.home() (client folder renamed to patrick_rombyer)
 * v1.02 - Added type hints for config dictionary
 * v1.01 - Added standardized file header
 * v1.00 - Initial release with example client config
 """
 
+from pathlib import Path
 from typing import Dict, Any
 from faq_generator import run_faq_generator
 
@@ -36,7 +38,9 @@ client_config: Dict[str, Any] = {
     "city": "Adrian",
     "state": "MI",
     "seed_keyword": "HVAC contractor",
-    "output_root": r"C:\Users\georg\OneDrive\RankRocket\Clients\Patrick Rombyer",
+    "output_root": str(
+        Path.home() / "OneDrive" / "RankRocket" / "Clients" / "patrick_rombyer"
+    ),
 }
 
 if __name__ == "__main__":
